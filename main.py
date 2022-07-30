@@ -81,12 +81,18 @@ def download_track(trackId, album_id):
     # create album folder
     if not os.path.exists(folder):
         os.makedirs(folder)
+    
+    # get file data from download_request URL
+    print("downloading binary data from URL")
+    data_to_download = requests.get(download_req.content)
+    
     # write data to file
     with open(
         folder + "/" + str(track_index) + " - " +
         track_name + "." + file_type, "wb"
     ) as f:
-        f.write(download_req.content)
+        print("writing song to disk")
+        f.write(data_to_download.content)
     print(str(track_index) + " - " + track_name + "." + file_type)
     # set track metadata
     local_track = music_tag.load_file(
